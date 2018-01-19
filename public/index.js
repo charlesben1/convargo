@@ -160,26 +160,35 @@ deliveries.forEach(function(delivery){
        if (delivery.volume > 25)
        {
         delivery.price = truck.pricePerKm*delivery.distance + (truck.pricePerVolume*delivery.volume)*0.5;
-        console.log(delivery.price);
+        
        }
        else if (delivery.volume > 10)
        {
         delivery.price = truck.pricePerKm*delivery.distance + (truck.pricePerVolume*delivery.volume)*0.7;
-        console.log(delivery.price);
+        
        }
        else if (delivery.volume > 5)
        {
         delivery.price = truck.pricePerKm*delivery.distance + (truck.pricePerVolume*delivery.volume)*0.9;
-        console.log(delivery.price);
+        
        }
 
        else {delivery.price = truck.pricePerKm*delivery.distance + truck.pricePerVolume*delivery.volume;
-       console.log(delivery.price);
+       
 
      }
+     console.log(delivery.price);
 
-
+       var commission = delivery.price*0.3;
+       delivery.commission.insurance=commission*0.5;
+       delivery.commission.treasury= Math.ceil(delivery.distance / 500);
+       delivery.commission.convargo = (commission - delivery.commission.insurance - delivery.commission.treasury);
+       console.log("insurance"+ delivery.commission.insurance);
+       console.log("treasury" + delivery.commission.treasury);
+       console.log("convargo" + delivery.commission.convargo);
     }
+
+
   }) 
   
 });
