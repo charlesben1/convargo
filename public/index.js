@@ -148,3 +148,17 @@ const actors = [{
 console.log(truckers);
 console.log(deliveries);
 console.log(actors);
+
+
+deliveries.forEach(function(delivery){
+
+  truckers.forEach(function(truck){
+    if(truck.id == delivery.truckerId)
+    {
+       delivery.price = truck.pricePerKm*delivery.distance + truck.pricePerVolume*delivery.volume;
+       console.log(delivery.price);
+    }
+  }) 
+  
+});
+
