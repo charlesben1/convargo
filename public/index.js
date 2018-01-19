@@ -174,10 +174,8 @@ deliveries.forEach(function(delivery){
        }
 
        else {delivery.price = truck.pricePerKm*delivery.distance + truck.pricePerVolume*delivery.volume;
-       
-
-     }
-     console.log(delivery.price);
+    }
+     
 
        var commission = delivery.price*0.3;
        delivery.commission.insurance=commission*0.5;
@@ -186,8 +184,14 @@ deliveries.forEach(function(delivery){
        console.log("insurance"+ delivery.commission.insurance);
        console.log("treasury" + delivery.commission.treasury);
        console.log("convargo" + delivery.commission.convargo);
-    }
+    
 
+    if(delivery.options.deductibleReduction == true )
+    {
+      delivery.price = delivery.price + delivery.volume;
+    }
+    console.log(delivery.price);
+}
 
   }) 
   
