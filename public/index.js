@@ -183,7 +183,7 @@ deliveries.forEach(function(delivery){
     delivery.commission.treasury= Math.ceil(delivery.distance / 500);
     delivery.commission.convargo = (commission - delivery.commission.insurance - delivery.commission.treasury);
        
-    
+   
     var deductibleoption;
     deductibleoption = 0; 
     if(delivery.options.deductibleReduction == true )
