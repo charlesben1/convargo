@@ -155,44 +155,64 @@ deliveries.forEach(function(delivery){
   truckers.forEach(function(truck){
     if(truck.id == delivery.truckerId)
     {
-       
 
-       if (delivery.volume > 25)
-       {
-        delivery.price = truck.pricePerKm*delivery.distance + (truck.pricePerVolume*delivery.volume)*0.5;
-        
-       }
-       else if (delivery.volume > 10)
-       {
-        delivery.price = truck.pricePerKm*delivery.distance + (truck.pricePerVolume*delivery.volume)*0.7;
-        
-       }
-       else if (delivery.volume > 5)
-       {
-        delivery.price = truck.pricePerKm*delivery.distance + (truck.pricePerVolume*delivery.volume)*0.9;
-        
-       }
 
-       else {delivery.price = truck.pricePerKm*delivery.distance + truck.pricePerVolume*delivery.volume;
+     if (delivery.volume >= 25)
+     {
+      delivery.price = truck.pricePerKm*delivery.distance + (truck.pricePerVolume*delivery.volume)*0.5;
+
     }
-     
+    else if (delivery.volume >= 10)
+    {
+      delivery.price = truck.pricePerKm*delivery.distance + (truck.pricePerVolume*delivery.volume)*0.7;
 
-       var commission = delivery.price*0.3;
-       delivery.commission.insurance=commission*0.5;
-       delivery.commission.treasury= Math.ceil(delivery.distance / 500);
-       delivery.commission.convargo = (commission - delivery.commission.insurance - delivery.commission.treasury);
-       console.log("insurance"+ delivery.commission.insurance);
-       console.log("treasury" + delivery.commission.treasury);
-       console.log("convargo" + delivery.commission.convargo);
+    }
+    else if (delivery.volume >= 5)
+    {
+      delivery.price = truck.pricePerKm*delivery.distance + ((truck.pricePerVolume*delivery.volume)*0.9);
+
+    }
+
+    else {delivery.price = truck.pricePerKm*delivery.distance + truck.pricePerVolume*delivery.volume;
+    }
+
     
 
+    var commission = delivery.price*0.3;
+    delivery.commission.insurance=commission*0.5;
+    delivery.commission.treasury= Math.ceil(delivery.distance / 500);
+    delivery.commission.convargo = (commission - delivery.commission.insurance - delivery.commission.treasury);
+       //console.log("insurance= "+ delivery.commission.insurance);
+       //console.log("treasury= " + delivery.commission.treasury);
+       //console.log("convargo= " + delivery.commission.convargo);
+    
+    var deductibleoption;
+    deductibleoption = 0; 
     if(delivery.options.deductibleReduction == true )
     {
-      delivery.price = delivery.price + delivery.volume;
+      deductibleoption = delivery.volume;
+      delivery.price = delivery.price + deductibleoption;
     }
-    console.log(delivery.price);
-}
+    
+    actors.shipper = delivery.price;
+    actors.trucker = delivery.price - commission - deductibleoption;
+    actors.treasury = delivery.commission.treasury;
+    actors.insurance = delivery.commission.insurance;
+    actors.convargo = delivery.commission.convargo + deductibleoption;  
 
-  }) 
+    console.log("delivery#  " + delivery.id);
+    console.log("Total price:  "+delivery.price);
+    console.log("insurance fees= "+ delivery.commission.insurance);
+    console.log("treasury fees= " + delivery.commission.treasury);
+    console.log("convargo fees= " + delivery.commission.convargo);
+    console.log("Shipper pays: " + actors.shipper);
+    console.log("Trucker receives: " + actors.trucker);
+    console.log("Treasury receives: " + actors.treasury);
+    console.log("Insurance receives: " + actors.insurance);
+    console.log("Convargo finally wins: " + actors.convargo);
+
+  }
   
 });
+
+})
